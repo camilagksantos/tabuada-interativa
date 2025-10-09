@@ -1,0 +1,93 @@
+<div class="game-container">
+    <!-- Header com Nome -->
+    <div class="header">
+        <h2>Olá, {{ nomeJogador }}! 👋</h2>
+    </div>
+
+    <!-- Botão Home Flutuante -->
+    <button class="btn-home-float" *ngIf="jogoIniciado && !jogoFinalizado" (click)="voltarAoInicio()"
+        title="Voltar ao Início">
+        🏠
+    </button>
+
+    <!-- Tela de Jogo -->
+    <div 
+        class="game-card" 
+        *ngIf="jogoIniciado && !jogoFinalizado">
+        <!-- Barra de Progresso -->
+        <div class="progresso-container">
+            <div class="progresso-info">
+                <span>Questão {{ questoesConcluidas + 1 }} de {{ totalQuestoes }}</span>
+                <span>⭐ {{ acertos }} | ❌ {{ erros }}</span>
+            </div>
+            <div class="barra-progresso">
+                <div 
+                    class="barra-preenchida" 
+                    [style.width.%]="getProgresso()"></div>
+            </div>
+        </div>
+
+        <!-- Questão -->
+        <div class="questao-container">
+            <h1 class="questao">{{ numeroAtual }} × {{ multiplicadorAtual }} = ?</h1>
+        </div>
+
+        <!-- Display da Resposta -->
+        <div class="display-resposta">
+            <span *ngIf="respostaUsuario; else placeholder">{{ respostaUsuario }}</span>
+            <ng-template #placeholder>
+                <span class="placeholder">Digite a resposta</span>
+            </ng-template>
+        </div>
+
+        <!-- Teclado Numérico -->
+        <div class="teclado-numerico">
+            <div class="numeros-grid">
+                <button 
+                    *ngFor="let num of [1, 2, 3, 4, 5, 6, 7, 8, 9]" class="btn-numero"
+                    (click)="adicionarNumero(num)" 
+                    [disabled]="botoesDesabilitados">
+                    {{ num }}
+                </button>
+                <button 
+                    class="btn-numero btn-especial" 
+                    (click)="apagarUltimo()" 
+                    [disabled]="botoesDesabilitados">
+                    ⌫
+                </button>
+                <button 
+                    class="btn-numero" 
+                    (click)="adicionarNumero(0)" 
+                    [disabled]="botoesDesabilitados">
+                    0
+                </button>
+                <button 
+                    class="btn-numero btn-especial" 
+                    (click)="limparResposta()" 
+                    [disabled]="botoesDesabilitados">
+                    C
+                </button>
+            </div>
+
+            <!-- Botão Confirmar -->
+            <button 
+                class="btn-confirmar" 
+                (click)="verificarResposta()"
+                [disabled]="botoesDesabilitados || respostaUsuario === ''">
+                ✓ Confirmar
+            </button>
+        </div>
+    </div>
+
+    <!-- Componente de Feedback - Tela Final -->
+    <app-feedback 
+        *ngIf="jogoFinalizado" 
+        [acertos]="acertos" 
+        [erros]="erros" 
+        [totalQuestoes]="totalQuestoes"
+        [mensagem]="mensagem" 
+        [mensagemCor]="mensagemCor" 
+        (reiniciar)="reiniciarJogo()" 
+        (voltarHome)="voltarAoInicio()">
+    </app-feedback>
+</div>

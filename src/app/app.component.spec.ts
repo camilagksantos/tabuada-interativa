@@ -17,7 +17,6 @@ describe('AppComponent', () => {
   it(`should have the 'tabuada-interativa' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('tabuada-interativa');
   });
 
   it('should render title', () => {

@@ -1,0 +1,35 @@
+<div class="feedback-overlay">
+    <div class="resultado-card">
+        <h1>🎮 Jogo Finalizado!</h1>
+
+        <div class="resultado-info">
+            <div class="score-final">
+                <div class="score-item acertos">
+                    <span class="score-numero">{{ acertos }}</span>
+                    <span class="score-label">Acertos ⭐</span>
+                </div>
+                <div class="score-item erros">
+                    <span class="score-numero">{{ erros }}</span>
+                    <span class="score-label">Erros ❌</span>
+                </div>
+            </div>
+
+            <div class="mensagem-final" [style.color]="mensagemCor">
+                {{ mensagem }}
+            </div>
+
+            <div class="percentual">
+                {{ percentual }}% de aproveitamento
+            </div>
+        </div>
+
+        <div class="botoes-finais">
+            <button class="btn-reiniciar" (click)="onReiniciar()">
+                🔄 Jogar Novamente
+            </button>
+            <button class="btn-home" (click)="onVoltarHome()">
+                🏠 Voltar ao Início
+            </button>
+        </div>
+    </div>
+</div>

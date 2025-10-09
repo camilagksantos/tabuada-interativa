@@ -1,0 +1,43 @@
+<div class="home-container">
+    <div class="home-card">
+        <h1>✨ Tabuada Divertida ✨</h1>
+        <p class="subtitle">Vamos aprender brincando!</p>
+
+        <div class="form-section">
+            <label for="nome">Qual é o seu nome?</label>
+            <input type="text" id="nome" [(ngModel)]="nomeJogador" placeholder="Digite seu nome aqui..."
+                maxlength="20" />
+        </div>
+
+        <div class="form-section">
+            <div class="section-header">
+                <label>Escolha as tabuadas que quer praticar:</label>
+                <button type="button" class="btn-selecionar-todas" (click)="selecionarTodas()">
+                    {{ textoBotaoSelecionar }}
+                </button>
+            </div>
+
+            <div class="tabuadas-grid">
+                <label *ngFor="let tabuada of tabuadas" class="checkbox-label">
+                    <input type="checkbox" [(ngModel)]="tabuada.selecionada" />
+                    <span>Tabuada do {{ tabuada.numero }}</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <label class="checkbox-label modo-aleatorio">
+                <input type="checkbox" [(ngModel)]="modoAleatorio" />
+                <span>🎲 Modo Aleatório (sorteia entre as selecionadas)</span>
+            </label>
+        </div>
+
+        <div class="info-selecionadas" *ngIf="tabuadasSelecionadas.length > 0">
+            <strong>Tabuadas selecionadas:</strong> {{ tabuadasSelecionadas.join(', ') }}
+        </div>
+
+        <button class="btn-iniciar" [disabled]="!podeIniciar" (click)="iniciarJogo()">
+            {{ textoBotaoIniciar }}
+        </button>
+    </div>
+</div>

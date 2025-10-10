@@ -1,0 +1,82 @@
+<div class="historico-container">
+    <div class="historico-header">
+        <button class="btn-voltar" (click)="voltarHome()">
+            ← Voltar
+        </button>
+        <h1>📊 Histórico de Partidas</h1>
+        <button class="btn-limpar" (click)="limparTudo()" *ngIf="partidas.length > 0">
+            🗑️ Limpar Tudo
+        </button>
+    </div>
+
+    <div class="historico-content">
+        <!-- Mensagem quando não há partidas -->
+        <div class="vazio" *ngIf="partidas.length === 0">
+            <p>📭 Nenhuma partida registrada ainda!</p>
+            <p>Jogue para começar seu histórico.</p>
+        </div>
+
+        <!-- Lista de partidas -->
+        <div class="partida-card" *ngFor="let partida of partidas">
+            <div class="partida-header">
+                <h2>{{ partida.nomeJogador }}</h2>
+                <button class="btn-deletar" (click)="deletarPartida(partida.id)">
+                    ❌
+                </button>
+            </div>
+
+            <div class="partida-info">
+                <div class="info-item">
+                    <span class="label">📅 Data:</span>
+                    <span class="valor">{{ formatarData(partida.data) }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">📚 Tabuadas:</span>
+                    <span class="valor">{{ partida.tabuadas.join(', ') }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">🎲 Modo:</span>
+                    <span class="valor">{{ partida.modoAleatorio ? 'Aleatório' : 'Sequencial' }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">⏱️ Tempo Total:</span>
+                    <span class="valor">{{ formatarTempo(partida.tempoTotalSegundos) }}</span>
+                </div>
+            </div>
+
+            <div class="partida-resultado">
+                <div class="resultado-item acertos">
+                    <span class="numero">{{ partida.acertos }}</span>
+                    <span class="texto">Acertos ⭐</span>
+                </div>
+                <div class="resultado-item erros">
+                    <span class="numero">{{ partida.erros }}</span>
+                    <span class="texto">Erros ❌</span>
+                </div>
+                <div class="resultado-item percentual">
+                    <span class="numero">{{ (partida.acertos / (partida.acertos + partida.erros) * 100).toFixed(0)
+                        }}%</span>
+                    <span class="texto">Aproveitamento</span>
+                </div>
+            </div>
+
+            <!-- Detalhes das questões -->
+            <details class="questoes-detalhes">
+                <summary>Ver questões detalhadas</summary>
+                <div class="questoes-lista">
+                    <div class="questao-item" *ngFor="let questao of partida.questoes; let i = index"
+                        [class.correta]="questao.correta" [class.incorreta]="!questao.correta">
+                        <span class="questao-numero">{{ i + 1 }}</span>
+                        <span class="questao-pergunta">{{ questao.pergunta }} = ?</span>
+                        <span class="questao-resposta">{{ questao.respostaUsuario }}</span>
+                        <span class="questao-tempo">⏱️ {{ questao.tempoSegundos }}s</span>
+                        <span class="questao-status">{{ questao.correta ? '✓' : '✗' }}</span>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+</div>

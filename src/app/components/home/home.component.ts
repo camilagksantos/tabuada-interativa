@@ -71,4 +71,8 @@ export class HomeComponent {
     const todasSelecionadas = this.todasSelecionadas;
     this.tabuadas.forEach(t => t.selecionada = !todasSelecionadas);
   }
+
+  verHistorico(): void {
+    this.router.navigate(['/historico']);
+  }
 }

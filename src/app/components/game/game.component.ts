@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { GameStateService } from '../../services/game-state.service';
 import { FeedbackComponent } from '../feedback/feedback.component';
+import { Questao } from '../../models/questao';
+import { HistoricoService } from '../../services/historico.service';
+import { Partida } from '../../models/partida';
 
 
 @Component({
@@ -35,11 +38,16 @@ export class GameComponent {
 
   botoesDesabilitados: boolean = false;
 
+  tempoInicioQuestao: number = 0;
+  tempoInicioPartida: number = 0;
+  questoesRespondidas: Questao[] = [];
+
   questoesGeradas: Set<string> = new Set();
 
   constructor(
     private router: Router,
-    private gameState: GameStateService
+    private gameState: GameStateService,
+    private historicoService: HistoricoService
   ) { }
 
   ngOnInit(): void {
@@ -65,6 +73,8 @@ export class GameComponent {
     this.jogoFinalizado = false;
     this.mensagem = '';
     this.questoesGeradas = new Set();
+    this.questoesRespondidas = [];     
+    this.tempoInicioPartida = Date.now();
     this.proximaQuestao();
   }
 
@@ -92,12 +102,10 @@ export class GameComponent {
 
     do {
       if (this.modoAleatorio) {
-        // MODO ALEATÓRIO: sorteia tabuada E multiplicador
         const indiceAleatorio = Math.floor(Math.random() * this.tabuadasDisponiveis.length);
         this.numeroAtual = this.tabuadasDisponiveis[indiceAleatorio];
         this.multiplicadorAtual = Math.floor(Math.random() * 10) + 1;
       } else {
-        // MODO SEQUENCIAL: tabuada em sequência, multiplicador de 1 a 10
         const indice = this.questoesConcluidas % this.tabuadasDisponiveis.length;
         this.numeroAtual = this.tabuadasDisponiveis[indice];
         this.multiplicadorAtual = (this.questoesConcluidas % 10) + 1;
@@ -114,6 +122,9 @@ export class GameComponent {
 
       tentativas++;
     } while (tentativas < maxTentativas);
+
+    this.tempoInicioQuestao = Date.now();
+
   }
 
   adicionarNumero(numero: number): void {
@@ -138,8 +149,22 @@ export class GameComponent {
 
     this.botoesDesabilitados = true;
     const respostaNumerica = parseInt(this.respostaUsuario);
+    const tempoFimQuestao = Date.now();
+    const tempoSegundos = Math.round((tempoFimQuestao - this.tempoInicioQuestao) / 1000);
 
-    if (respostaNumerica === this.respostaCorreta) {
+    const correta = respostaNumerica === this.respostaCorreta;
+
+    const questao: Questao = {
+      pergunta: `${this.numeroAtual} × ${this.multiplicadorAtual}`,
+      respostaCorreta: this.respostaCorreta,
+      respostaUsuario: respostaNumerica,
+      correta: correta,
+      tempoSegundos: tempoSegundos
+    };
+
+    this.questoesRespondidas.push(questao);
+
+    if (correta) {
       this.acertos++;
     } else {
       this.erros++;
@@ -155,6 +180,23 @@ export class GameComponent {
 
   finalizarJogo(): void {
     this.jogoFinalizado = true;
+
+    const tempoFimPartida = Date.now();
+    const tempoTotalSegundos = Math.round((tempoFimPartida - this.tempoInicioPartida) / 1000);
+
+    const partida: Partida = {
+      id: Date.now().toString(),
+      nomeJogador: this.nomeJogador,
+      data: new Date().toISOString(),
+      tabuadas: this.tabuadasDisponiveis,
+      modoAleatorio: this.modoAleatorio,
+      questoes: this.questoesRespondidas,
+      acertos: this.acertos,
+      erros: this.erros,
+      tempoTotalSegundos: tempoTotalSegundos
+    };
+
+    this.historicoService.salvarPartida(partida);
 
     if (this.acertos >= this.totalQuestoes * 0.7) {
       this.mensagem = `🎉 PARABÉNS ${this.nomeJogador.toUpperCase()}! Você acertou ${this.acertos} de ${this.totalQuestoes} questões!`;

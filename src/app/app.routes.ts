@@ -15,6 +15,10 @@ export const routes: Routes = [
         loadComponent: () => import('./components/game/game.component').then(m => m.GameComponent)
     },
     {
+        path: 'historico',
+        loadComponent: () => import('./components/historico/historico.component').then(m => m.HistoricoComponent)
+    },
+    {
         path: '**',
         redirectTo: 'home'
     }

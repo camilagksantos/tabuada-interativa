@@ -3,6 +3,10 @@
         <h1>✨ Tabuada Divertida ✨</h1>
         <p class="subtitle">Vamos aprender brincando!</p>
 
+        <button class="btn-historico" (click)="verHistorico()">
+            📊 Ver Histórico
+        </button>
+        
         <div class="form-section">
             <label for="nome">Qual é o seu nome?</label>
             <input type="text" id="nome" [(ngModel)]="nomeJogador" placeholder="Digite seu nome aqui..."

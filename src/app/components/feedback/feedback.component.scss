@@ -1,3 +1,4 @@
+// BASE - MOBILE FIRST
 .feedback-overlay {
     position: fixed;
     top: 0;
@@ -5,11 +6,16 @@
     right: 0;
     bottom: 0;
     background: rgba(102, 126, 234, 0.95);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 15px;
     z-index: 1000;
     animation: fadeIn 0.3s ease-out;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 30px; 
+    padding-bottom: 30px;
 }
 
 @keyframes fadeIn {
@@ -24,26 +30,27 @@
 
 .resultado-card {
     background: white;
-    border-radius: 30px;
-    padding: 50px 40px;
-    max-width: 600px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: scaleIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    font-family: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
+        border-radius: 20px;
+        padding: 25px 20px;
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        animation: scaleIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        font-family: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
+        margin: auto;
 
     h1 {
         color: #ff69b4;
-        font-size: 2.5em;
-        margin: 0 0 30px 0;
+        font-size: 1.6em;
+        margin: 0 0 20px 0;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
     }
 }
 
 @keyframes scaleIn {
     from {
-        transform: scale(0.7);
+        transform: scale(0.8);
         opacity: 0;
     }
 
@@ -54,21 +61,20 @@
 }
 
 .resultado-info {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .score-final {
     display: flex;
-    justify-content: space-around;
-    margin-bottom: 30px;
-    gap: 20px;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
 .score-item {
-    flex: 1;
-    padding: 25px 20px;
-    border-radius: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 18px 15px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     animation: slideUp 0.5s ease-out;
 
     &.acertos {
@@ -85,7 +91,7 @@
 @keyframes slideUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
     }
 
     to {
@@ -96,32 +102,32 @@
 
 .score-numero {
     display: block;
-    font-size: 3.5em;
+    font-size: 2.5em;
     font-weight: bold;
     color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 .score-label {
     display: block;
-    font-size: 1.2em;
+    font-size: 1em;
     color: #666;
     font-weight: bold;
 }
 
 .mensagem-final {
-    font-size: 1.5em;
+    font-size: 1.1em;
     font-weight: bold;
-    margin-bottom: 20px;
-    padding: 20px;
-    border-radius: 15px;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 12px;
     background: rgba(255, 235, 59, 0.2);
     line-height: 1.4;
     animation: fadeIn 0.5s ease-out 0.3s both;
 }
 
 .percentual {
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: bold;
     color: #667eea;
     animation: fadeIn 0.5s ease-out 0.4s both;
@@ -129,31 +135,25 @@
 
 .botoes-finais {
     display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-top: 30px;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
 
     button {
-        flex: 1;
-        min-width: 200px;
-        padding: 18px;
-        font-size: 1.3em;
+        width: 100%;
+        padding: 14px;
+        font-size: 1.1em;
         font-weight: bold;
         border: none;
-        border-radius: 15px;
+        border-radius: 12px;
         cursor: pointer;
         transition: all 0.3s;
-        font-family: 'Comic Sans MS', cursive;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        font-family: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         color: white;
 
-        &:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
         &:active {
-            transform: translateY(-1px);
+            transform: scale(0.98);
         }
     }
 }
@@ -168,23 +168,41 @@
     animation: slideUp 0.5s ease-out 0.6s both;
 }
 
-// Responsividade
-@media (max-width: 600px) {
+// TABLET (min-width: 600px)
+@media (min-width: 600px) {
+    .feedback-overlay {
+        padding: 20px;
+    }
+
     .resultado-card {
-        padding: 40px 30px;
+        padding: 35px 30px;
+        border-radius: 25px;
 
         h1 {
             font-size: 2em;
+            margin-bottom: 25px;
         }
     }
 
+    .resultado-info {
+        margin-bottom: 25px;
+    }
+
     .score-final {
-        flex-direction: column;
+        flex-direction: row;
         gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .score-item {
+        flex: 1;
+        padding: 22px 18px;
+        border-radius: 18px;
     }
 
     .score-numero {
         font-size: 3em;
+        margin-bottom: 4px;
     }
 
     .score-label {
@@ -193,19 +211,91 @@
 
     .mensagem-final {
         font-size: 1.3em;
-        padding: 15px;
+        padding: 18px;
+        margin-bottom: 18px;
+        border-radius: 15px;
     }
 
     .percentual {
-        font-size: 1.6em;
+        font-size: 1.8em;
     }
 
     .botoes-finais {
-        flex-direction: column;
+        flex-direction: row;
+        gap: 15px;
+        margin-top: 25px;
 
         button {
-            min-width: 100%;
+            flex: 1;
+            min-width: 200px;
+            padding: 16px;
             font-size: 1.2em;
+            border-radius: 15px;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+            }
+        }
+    }
+}
+
+// DESKTOP (min-width: 900px)
+@media (min-width: 900px) {
+    .resultado-card {
+        padding: 50px 40px;
+        border-radius: 30px;
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+    }
+
+    .resultado-info {
+        margin-bottom: 30px;
+    }
+
+    .score-final {
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .score-item {
+        padding: 25px 20px;
+        border-radius: 20px;
+    }
+
+    .score-numero {
+        font-size: 3.5em;
+        margin-bottom: 5px;
+    }
+
+    .score-label {
+        font-size: 1.2em;
+    }
+
+    .mensagem-final {
+        font-size: 1.5em;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .percentual {
+        font-size: 2em;
+    }
+
+    .botoes-finais {
+        margin-top: 30px;
+
+        button {
+            padding: 18px;
+            font-size: 1.3em;
+
+            &:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            }
         }
     }
 }

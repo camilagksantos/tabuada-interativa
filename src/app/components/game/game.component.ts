@@ -168,7 +168,6 @@ export class GameComponent {
     };
 
     this.questoesRespondidas.push(questao);
-    this.questoesConcluidas++;
 
     if (correta) {
       this.corretos++;  // ← SÓ INCREMENTA AQUI
@@ -177,6 +176,7 @@ export class GameComponent {
       setTimeout(() => {
         this.mostrarFeedbackAcerto = false;
         this.botoesDesabilitados = false;
+        this.questoesConcluidas++;
         this.proximaQuestao();
       }, 1500);
 
@@ -187,6 +187,7 @@ export class GameComponent {
       setTimeout(() => {
         this.mostrarFeedbackErro = false;
         this.botoesDesabilitados = false;
+        this.questoesConcluidas++;
         this.proximaQuestao();
       }, 3000);
     }

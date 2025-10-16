@@ -65,6 +65,7 @@
     padding: 40px 20px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.3s ease-out;
 
     p {
         font-size: 1.2em;
@@ -79,13 +80,103 @@
     }
 }
 
-.partida-card {
-    background: white;
-    border-radius: 15px;
-    padding: 20px;
+// ============================================
+// 🆕 FILTROS
+// ============================================
+
+.filtros-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     margin-bottom: 15px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     animation: slideIn 0.3s ease-out;
+}
+
+.filtro {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    label {
+        font-weight: bold;
+        color: #667eea;
+        font-size: 0.9em;
+    }
+
+    select {
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-family: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
+        font-size: 1em;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+    }
+}
+
+// ============================================
+// 🆕 ABAS
+// ============================================
+
+.tabs-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab-btn {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    background: white;
+    color: #667eea;
+    cursor: pointer;
+    font-family: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    &.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+}
+
+.tab-content {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slideIn {
@@ -100,25 +191,191 @@
     }
 }
 
+// ============================================
+// 🆕 ABA RESUMO - CARDS DE ESTATÍSTICAS
+// ============================================
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out;
+    transition: all 0.3s;
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.stat-icone {
+    font-size: 2.5em;
+    margin-bottom: 8px;
+}
+
+.stat-valor {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 0.9em;
+    color: #666;
+}
+
+// ============================================
+// 🆕 SEÇÕES (JOGADORES, TABUADAS, ETC)
+// ============================================
+
+.secao-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out;
+
+    h3 {
+        margin: 0 0 15px 0;
+        color: #667eea;
+        font-size: 1.2em;
+    }
+}
+
+.jogadores-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.jogador-badge {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+
+    &:active {
+        transform: scale(0.98);
+        border-color: #667eea;
+    }
+}
+
+.jogador-nome {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.jogador-partidas {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.ranking-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.ranking-posicao {
+    font-size: 1.5em;
+}
+
+.ranking-texto {
+    flex: 1;
+    font-weight: bold;
+    color: #333;
+}
+
+.ranking-valor {
+    font-weight: bold;
+    color: #667eea;
+}
+
+// ============================================
+// 🆕 ABA PARTIDAS - AGRUPAMENTO
+// ============================================
+
+.jogador-grupo {
+    margin-bottom: 25px;
+}
+
+.jogador-grupo-header {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    h3 {
+        margin: 0;
+        color: #ff69b4;
+        font-size: 1.3em;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .badge {
+        font-size: 0.7em;
+        background: #667eea;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-weight: normal;
+    }
+}
+
+.partida-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out;
+}
+
 .partida-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
     border-bottom: 2px solid #f0f0f0;
+}
 
-    h2 {
-        color: #ff69b4;
-        font-size: 1.4em;
-        margin: 0;
-    }
+.partida-data {
+    font-weight: bold;
+    color: #667eea;
+    font-size: 0.95em;
 }
 
 .btn-deletar {
     background: transparent;
     border: none;
-    font-size: 1.3em;
+    font-size: 1.2em;
     cursor: pointer;
     transition: all 0.3s;
     padding: 5px;
@@ -128,46 +385,40 @@
     }
 }
 
-.partida-info {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.info-item {
+.partida-resumo {
     display: flex;
     flex-direction: column;
-    padding: 12px;
-    background: #f8f9fa;
-    border-radius: 10px;
+    gap: 8px;
+    margin-bottom: 12px;
+}
 
-    .label {
-        font-size: 0.85em;
-        color: #666;
-        margin-bottom: 4px;
-        font-weight: bold;
-    }
+.resumo-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+}
 
-    .valor {
-        font-size: 1em;
-        color: #333;
-        font-weight: bold;
-    }
+.resumo-label {
+    color: #666;
+}
+
+.resumo-valor {
+    font-weight: bold;
+    color: #333;
 }
 
 .partida-resultado {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 8px;
+    margin-bottom: 12px;
 }
 
-.resultado-item {
-    padding: 15px;
-    border-radius: 12px;
+.resultado-badge {
+    padding: 12px;
+    border-radius: 10px;
     text-align: center;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 
     &.acertos {
         background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
@@ -180,33 +431,37 @@
     &.percentual {
         background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
     }
-
-    .numero {
-        display: block;
-        font-size: 2em;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .texto {
-        display: block;
-        font-size: 0.9em;
-        color: #666;
-        margin-top: 3px;
-    }
 }
 
+.resultado-numero {
+    display: block;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #333;
+}
+
+.resultado-texto {
+    display: block;
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 3px;
+}
+
+// ============================================
+// QUESTÕES DETALHADAS
+// ============================================
+
 .questoes-detalhes {
-    margin-top: 15px;
+    margin-top: 12px;
     border-top: 2px solid #f0f0f0;
-    padding-top: 15px;
+    padding-top: 12px;
 
     summary {
-        font-size: 1em;
+        font-size: 0.95em;
         font-weight: bold;
         color: #667eea;
         cursor: pointer;
-        padding: 10px;
+        padding: 8px;
         border-radius: 8px;
         transition: all 0.3s;
 
@@ -217,19 +472,19 @@
 }
 
 .questoes-lista {
-    margin-top: 12px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .questao-item {
     display: grid;
     grid-template-columns: 30px 1fr 70px;
     grid-template-rows: auto auto;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
-    padding: 10px;
+    padding: 8px;
     border-radius: 8px;
     font-size: 0.85em;
 
@@ -276,7 +531,115 @@
     }
 }
 
+// ============================================
+// 🆕 ABA ESTATÍSTICAS
+// ============================================
+
+.aviso-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    p {
+        font-size: 1.1em;
+        color: #666;
+        margin: 0;
+    }
+}
+
+.stats-header {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+
+    h2 {
+        margin: 0;
+        color: #ff69b4;
+        font-size: 1.4em;
+    }
+}
+
+.tabuadas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.tabuada-item {
+    display: grid;
+    grid-template-columns: 40px 1fr 120px;
+    gap: 10px;
+    align-items: center;
+}
+
+.tabuada-numero {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #667eea;
+    text-align: center;
+}
+
+.tabuada-barra-container {
+    background: #e9ecef;
+    border-radius: 10px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.tabuada-barra {
+    height: 100%;
+    border-radius: 10px;
+    transition: all 0.5s ease-out;
+}
+
+.tabuada-info {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.tabuada-taxa {
+    font-weight: bold;
+}
+
+.tabuada-vezes {
+    color: #666;
+}
+
+.questoes-dificeis-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.questao-dificil {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.questao-dificil-pergunta {
+    font-weight: bold;
+    color: #333;
+}
+
+.questao-dificil-taxa {
+    font-weight: bold;
+}
+
+// ============================================
 // TABLET (min-width: 600px)
+// ============================================
+
 @media (min-width: 600px) {
     .historico-container {
         padding: 15px;
@@ -288,112 +651,90 @@
         h1 {
             font-size: 2em;
         }
+    }
 
-        button {
-            font-size: 1.05em;
+    .filtros-container {
+        flex-direction: row;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .filtro {
+        flex: 1;
+    }
+
+    .tab-btn {
+        font-size: 1em;
+        padding: 14px 20px;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        &.active:hover {
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
     }
 
-    .vazio {
-        padding: 50px 30px;
-        border-radius: 18px;
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
 
-        p {
-            font-size: 1.3em;
+    .stat-card {
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        }
+    }
 
-            &:first-child {
-                font-size: 1.8em;
-            }
+    .jogadores-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .jogador-badge {
+        &:hover {
+            transform: translateY(-2px);
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
     }
 
     .partida-card {
-        padding: 25px;
-        margin-bottom: 20px;
-        border-radius: 18px;
+        padding: 20px;
 
         &:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-        }
-    }
-
-    .partida-header {
-        margin-bottom: 18px;
-        padding-bottom: 15px;
-
-        h2 {
-            font-size: 1.7em;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
         }
     }
 
     .btn-deletar {
-        font-size: 1.4em;
+        font-size: 1.3em;
 
         &:hover {
             transform: scale(1.25) rotate(10deg);
         }
     }
 
-    .partida-info {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-        margin-bottom: 20px;
-    }
-
-    .info-item {
-        padding: 13px;
-
-        .label {
-            font-size: 0.9em;
-        }
-
-        .valor {
-            font-size: 1.05em;
-        }
-    }
-
     .partida-resultado {
         grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-bottom: 18px;
-    }
-
-    .resultado-item {
-        padding: 18px;
-
-        .numero {
-            font-size: 2.3em;
-        }
-
-        .texto {
-            font-size: 0.95em;
-        }
-    }
-
-    .questoes-detalhes {
-        margin-top: 18px;
-        padding-top: 18px;
-
-        summary {
-            font-size: 1.1em;
-
-            &:hover {
-                background: #f0f0f0;
-            }
-        }
-    }
-
-    .questoes-lista {
-        margin-top: 15px;
         gap: 10px;
+    }
+
+    .questoes-detalhes summary {
+        &:hover {
+            background: #f0f0f0;
+        }
     }
 
     .questao-item {
         grid-template-columns: 35px 1fr 90px 70px 35px;
         grid-template-rows: auto;
-        padding: 12px;
-        font-size: 0.95em;
+        padding: 10px;
+        font-size: 0.9em;
 
         .questao-numero {
             grid-row: 1;
@@ -421,9 +762,20 @@
             font-size: 1.4em;
         }
     }
+
+    .tabuada-item {
+        grid-template-columns: 50px 1fr 140px;
+    }
+
+    .stats-header h2 {
+        font-size: 1.8em;
+    }
 }
 
+// ============================================
 // DESKTOP (min-width: 900px)
+// ============================================
+
 @media (min-width: 900px) {
     .historico-container {
         padding: 20px;
@@ -457,94 +809,29 @@
         }
     }
 
-    .vazio {
-        padding: 60px 40px;
-        border-radius: 20px;
+    .filtros-container {
+        padding: 25px;
+        gap: 20px;
+    }
 
-        p {
-            font-size: 1.5em;
+    .stats-grid {
+        gap: 20px;
+    }
 
-            &:first-child {
-                font-size: 2em;
-            }
-        }
+    .jogadores-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
     }
 
     .partida-card {
-        padding: 30px;
-        margin-bottom: 25px;
-        border-radius: 20px;
-
-        &:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        }
+        padding: 25px;
     }
 
-    .partida-header {
-        margin-bottom: 20px;
-
-        h2 {
-            font-size: 2em;
-        }
+    .stats-header h2 {
+        font-size: 2.2em;
     }
 
-    .btn-deletar {
-        font-size: 1.5em;
-
-        &:hover {
-            transform: scale(1.3) rotate(10deg);
-        }
-    }
-
-    .partida-info {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-        margin-bottom: 25px;
-    }
-
-    .info-item {
-        padding: 15px;
-
-        .valor {
-            font-size: 1.1em;
-        }
-    }
-
-    .partida-resultado {
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-
-    .resultado-item {
-        padding: 20px;
-        border-radius: 15px;
-
-        .numero {
-            font-size: 2.5em;
-        }
-
-        .texto {
-            font-size: 1em;
-        }
-    }
-
-    .questoes-detalhes {
-        margin-top: 20px;
-        padding-top: 20px;
-
-        summary {
-            font-size: 1.2em;
-        }
-    }
-
-    .questao-item {
-        grid-template-columns: 40px 1fr 100px 80px 40px;
-        padding: 12px;
-        font-size: 1em;
-
-        .questao-status {
-            font-size: 1.5em;
-        }
+    .tabuada-item {
+        grid-template-columns: 60px 1fr 150px;
     }
 }

@@ -1,4 +1,5 @@
 <div class="historico-container">
+    <!-- Header com botões -->
     <div class="historico-header">
         <button class="btn-voltar" (click)="voltarHome()">
             ← Voltar
@@ -9,74 +10,258 @@
         </button>
     </div>
 
-    <div class="historico-content">
-        <!-- Mensagem quando não há partidas -->
-        <div class="vazio" *ngIf="partidas.length === 0">
+    <!-- Mensagem quando vazio -->
+    <div class="historico-content" *ngIf="partidas.length === 0">
+        <div class="vazio">
             <p>📭 Nenhuma partida registrada ainda!</p>
             <p>Jogue para começar seu histórico.</p>
         </div>
+    </div>
 
-        <!-- Lista de partidas -->
-        <div class="partida-card" *ngFor="let partida of partidas">
-            <div class="partida-header">
-                <h2>{{ partida.nomeJogador }}</h2>
-                <button class="btn-deletar" (click)="deletarPartida(partida.id)">
-                    ❌
-                </button>
+    <!-- Conteúdo principal quando há partidas -->
+    <div class="historico-content" *ngIf="partidas.length > 0">
+
+        <!-- Filtros -->
+        <div class="filtros-container">
+            <div class="filtro">
+                <label>📅 Período:</label>
+                <select [(ngModel)]="periodoSelecionado" (change)="onFiltroChange()">
+                    <option [value]="7">Últimos 7 dias</option>
+                    <option [value]="30">Últimos 30 dias</option>
+                    <option [value]="90">Últimos 90 dias</option>
+                    <option [value]="0">Todos os períodos</option>
+                </select>
             </div>
 
-            <div class="partida-info">
-                <div class="info-item">
-                    <span class="label">📅 Data:</span>
-                    <span class="valor">{{ formatarData(partida.data) }}</span>
+            <div class="filtro">
+                <label>👤 Jogador:</label>
+                <select [(ngModel)]="jogadorSelecionado" (change)="onFiltroChange()">
+                    <option value="">Todos jogadores</option>
+                    <option *ngFor="let jogador of listaJogadores" [value]="jogador">
+                        {{ jogador | titlecase }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Abas de navegação -->
+        <div class="tabs-container">
+            <button class="tab-btn" [class.active]="abaAtiva === 'resumo'" (click)="mudarAba('resumo')">
+                📊 Resumo
+            </button>
+            <button class="tab-btn" [class.active]="abaAtiva === 'partidas'" (click)="mudarAba('partidas')">
+                📜 Partidas
+            </button>
+            <button class="tab-btn" [class.active]="abaAtiva === 'stats'" (click)="mudarAba('stats')">
+                🏆 Estatísticas
+            </button>
+        </div>
+
+        <!-- ========== ABA RESUMO ========== -->
+        <div class="tab-content" *ngIf="abaAtiva === 'resumo'">
+
+            <!-- Cards de estatísticas gerais -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icone">🎮</div>
+                    <div class="stat-valor">{{ estatisticasGerais.totalPartidas }}</div>
+                    <div class="stat-label">Partidas</div>
                 </div>
 
-                <div class="info-item">
-                    <span class="label">📚 Tabuadas:</span>
-                    <span class="valor">{{ partida.tabuadas.join(', ') }}</span>
+                <div class="stat-card">
+                    <div class="stat-icone">⭐</div>
+                    <div class="stat-valor" [style.color]="getCorTaxaAcerto(estatisticasGerais.taxaAcertoMedia)">
+                        {{ estatisticasGerais.taxaAcertoMedia }}%
+                    </div>
+                    <div class="stat-label">Taxa de Acerto</div>
                 </div>
 
-                <div class="info-item">
-                    <span class="label">🎲 Modo:</span>
-                    <span class="valor">{{ partida.modoAleatorio ? 'Aleatório' : 'Sequencial' }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">⏱️ Tempo Total:</span>
-                    <span class="valor">{{ formatarTempo(partida.tempoTotalSegundos) }}</span>
+                <div class="stat-card">
+                    <div class="stat-icone">⏱️</div>
+                    <div class="stat-valor">{{ estatisticasGerais.tempoMedioPorQuestao }}s</div>
+                    <div class="stat-label">Tempo Médio/Questão</div>
                 </div>
             </div>
 
-            <div class="partida-resultado">
-                <div class="resultado-item acertos">
-                    <span class="numero">{{ partida.acertos }}</span>
-                    <span class="texto">Acertos ⭐</span>
-                </div>
-                <div class="resultado-item erros">
-                    <span class="numero">{{ partida.erros }}</span>
-                    <span class="texto">Erros ❌</span>
-                </div>
-                <div class="resultado-item percentual">
-                    <span class="numero">{{ (partida.acertos / (partida.acertos + partida.erros) * 100).toFixed(0)
-                        }}%</span>
-                    <span class="texto">Aproveitamento</span>
-                </div>
-            </div>
-
-            <!-- Detalhes das questões -->
-            <details class="questoes-detalhes">
-                <summary>Ver questões detalhadas</summary>
-                <div class="questoes-lista">
-                    <div class="questao-item" *ngFor="let questao of partida.questoes; let i = index"
-                        [class.correta]="questao.correta" [class.incorreta]="!questao.correta">
-                        <span class="questao-numero">{{ i + 1 }}</span>
-                        <span class="questao-pergunta">{{ questao.pergunta }} = ?</span>
-                        <span class="questao-resposta">{{ questao.respostaUsuario }}</span>
-                        <span class="questao-tempo">⏱️ {{ questao.tempoSegundos }}s</span>
-                        <span class="questao-status">{{ questao.correta ? '✓' : '✗' }}</span>
+            <!-- Jogadores cadastrados -->
+            <div class="secao-card" *ngIf="listaJogadores.length > 0">
+                <h3>👥 Jogadores Cadastrados</h3>
+                <div class="jogadores-grid">
+                    <div class="jogador-badge" *ngFor="let jogador of listaJogadores"
+                        (click)="jogadorSelecionado = jogador; onFiltroChange(); mudarAba('stats')">
+                        <div class="jogador-nome">{{ jogador | titlecase }}</div>
+                        <div class="jogador-partidas">
+                            {{ historicoService.getPartidasPorJogador(jogador).length }} partidas
+                        </div>
                     </div>
                 </div>
-            </details>
+            </div>
+
+            <!-- Tabuadas mais praticadas -->
+            <div class="secao-card" *ngIf="estatisticasGerais.tabuadasMaisPraticadas.length > 0">
+                <h3>🔢 Tabuadas Mais Praticadas</h3>
+                <div class="ranking-lista">
+                    <div class="ranking-item"
+                        *ngFor="let item of estatisticasGerais.tabuadasMaisPraticadas; let i = index">
+                        <span class="ranking-posicao">{{ i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉' }}</span>
+                        <span class="ranking-texto">Tabuada do {{ item.tabuada }}</span>
+                        <span class="ranking-valor">{{ item.vezes }}x</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
+        <!-- ========== ABA PARTIDAS ========== -->
+        <div class="tab-content" *ngIf="abaAtiva === 'partidas'">
+
+            <!-- Agrupamento por jogador -->
+            <div class="jogador-grupo" *ngFor="let grupo of getJogadoresAgrupados()">
+                <div class="jogador-grupo-header">
+                    <h3>👤 {{ grupo.nome }} <span class="badge">{{ grupo.partidas.length }} partidas</span></h3>
+                </div>
+
+                <!-- Lista de partidas do jogador -->
+                <div class="partida-card" *ngFor="let partida of grupo.partidas">
+                    <div class="partida-header">
+                        <div class="partida-data">
+                            📅 {{ formatarDataRelativa(partida.data) }} - {{ formatarData(partida.data).split(' ')[1] }}
+                        </div>
+                        <button class="btn-deletar" (click)="deletarPartida(partida.id)">
+                            ❌
+                        </button>
+                    </div>
+
+                    <div class="partida-resumo">
+                        <div class="resumo-item">
+                            <span class="resumo-label">📚 Tabuadas:</span>
+                            <span class="resumo-valor">{{ partida.tabuadas.join(', ') }}</span>
+                        </div>
+                        <div class="resumo-item">
+                            <span class="resumo-label">🎲 Modo:</span>
+                            <span class="resumo-valor">{{ partida.modoAleatorio ? 'Aleatório' : 'Sequencial' }}</span>
+                        </div>
+                        <div class="resumo-item">
+                            <span class="resumo-label">⏱️ Tempo:</span>
+                            <span class="resumo-valor">{{ formatarTempo(partida.tempoTotalSegundos) }}</span>
+                        </div>
+                    </div>
+
+                    <div class="partida-resultado">
+                        <div class="resultado-badge acertos">
+                            <span class="resultado-numero">{{ partida.corretos }}</span>
+                            <span class="resultado-texto">Corretos ⭐</span>
+                        </div>
+                        <div class="resultado-badge erros">
+                            <span class="resultado-numero">{{ partida.incorretos }}</span>
+                            <span class="resultado-texto">Incorretos ❌</span>
+                        </div>
+                        <div class="resultado-badge percentual">
+                            <span class="resultado-numero"
+                                [style.color]="getCorTaxaAcerto((partida.corretos / (partida.corretos + partida.incorretos) * 100))">
+                                {{ (partida.corretos / (partida.corretos + partida.incorretos) * 100).toFixed(0) }}%
+                            </span>
+                            <span class="resultado-texto">Aproveitamento</span>
+                        </div>
+                    </div>
+
+                    <!-- Detalhes das questões -->
+                    <details class="questoes-detalhes">
+                        <summary>Ver questões detalhadas</summary>
+                        <div class="questoes-lista">
+                            <div class="questao-item" *ngFor="let questao of partida.questoes; let i = index"
+                                [class.correta]="questao.correta" [class.incorreta]="!questao.correta">
+                                <span class="questao-numero">{{ i + 1 }}</span>
+                                <span class="questao-pergunta">{{ questao.pergunta }} = ?</span>
+                                <span class="questao-resposta">{{ questao.respostaUsuario }}</span>
+                                <span class="questao-tempo">⏱️ {{ questao.tempoSegundos }}s</span>
+                                <span class="questao-status">{{ questao.correta ? '✓' : '✗' }}</span>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ========== ABA ESTATÍSTICAS ========== -->
+        <div class="tab-content" *ngIf="abaAtiva === 'stats'">
+
+            <!-- Mensagem quando nenhum jogador selecionado -->
+            <div class="aviso-card" *ngIf="!jogadorSelecionado">
+                <p>👆 Selecione um jogador no filtro acima para ver estatísticas detalhadas!</p>
+            </div>
+
+            <!-- Estatísticas do jogador selecionado -->
+            <div *ngIf="jogadorSelecionado && estatisticasJogador">
+
+                <!-- Cabeçalho com nome do jogador -->
+                <div class="stats-header">
+                    <h2>📊 Análise: {{ jogadorSelecionado | titlecase }}</h2>
+                </div>
+
+                <!-- Cards de desempenho -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icone">🎮</div>
+                        <div class="stat-valor">{{ estatisticasJogador.totalPartidas }}</div>
+                        <div class="stat-label">Total de Partidas</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icone">⭐</div>
+                        <div class="stat-valor" [style.color]="getCorTaxaAcerto(estatisticasJogador.taxaAcerto)">
+                            {{ estatisticasJogador.taxaAcerto }}%
+                        </div>
+                        <div class="stat-label">Taxa de Acerto</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icone">🏆</div>
+                        <div class="stat-valor" [style.color]="getCorTaxaAcerto(estatisticasJogador.melhorResultado)">
+                            {{ estatisticasJogador.melhorResultado }}%
+                        </div>
+                        <div class="stat-label">Melhor Resultado</div>
+                    </div>
+                </div>
+
+                <!-- Desempenho por tabuada -->
+                <div class="secao-card" *ngIf="estatisticasJogador.tabuadasPraticadas.length > 0">
+                    <h3>🔢 Desempenho por Tabuada</h3>
+                    <div class="tabuadas-lista">
+                        <div class="tabuada-item" *ngFor="let tab of estatisticasJogador.tabuadasPraticadas">
+                            <div class="tabuada-numero">{{ tab.tabuada }}x</div>
+                            <div class="tabuada-barra-container">
+                                <div class="tabuada-barra" [style.width.%]="tab.taxaAcerto"
+                                    [style.background-color]="getCorTaxaAcerto(tab.taxaAcerto)">
+                                </div>
+                            </div>
+                            <div class="tabuada-info">
+                                <span class="tabuada-taxa" [style.color]="getCorTaxaAcerto(tab.taxaAcerto)">
+                                    {{ tab.taxaAcerto }}%
+                                </span>
+                                <span class="tabuada-vezes">({{ tab.vezes }} questões)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Questões mais difíceis -->
+                <div class="secao-card" *ngIf="estatisticasJogador.questoesDificeis.length > 0">
+                    <h3>⚠️ Questões que Precisam de Atenção</h3>
+                    <div class="questoes-dificeis-lista">
+                        <div class="questao-dificil" *ngFor="let questao of estatisticasJogador.questoesDificeis">
+                            <span class="questao-dificil-pergunta">{{ questao.pergunta }}</span>
+                            <span class="questao-dificil-taxa" [style.color]="getCorTaxaAcerto(questao.taxaAcerto)">
+                                {{ questao.taxaAcerto }}% acerto
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 </div>

@@ -7,7 +7,7 @@ export interface Partida {
     tabuadas: number[];
     modoAleatorio: boolean;
     questoes: Questao[];
-    acertos: number;
-    erros: number;
+    corretos: number;
+    incorretos: number;
     tempoTotalSegundos: number;
 }

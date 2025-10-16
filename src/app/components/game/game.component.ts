@@ -26,8 +26,8 @@ export class GameComponent {
   respostaUsuario: string = '';
   respostaCorreta: number = 0;
 
-  acertos: number = 0;
-  erros: number = 0;
+  corretos: number = 0;
+  incorretos: number = 0;
   questoesConcluidas: number = 0;
   totalQuestoes: number = 10;
   mensagem: string = '';
@@ -66,8 +66,8 @@ export class GameComponent {
   }
 
   iniciarJogo(): void {
-    this.acertos = 0;
-    this.erros = 0;
+    this.corretos = 0;
+    this.incorretos = 0;
     this.questoesConcluidas = 0;
     this.jogoIniciado = true;
     this.jogoFinalizado = false;
@@ -165,9 +165,9 @@ export class GameComponent {
     this.questoesRespondidas.push(questao);
 
     if (correta) {
-      this.acertos++;
+      this.corretos++;
     } else {
-      this.erros++;
+      this.incorretos++;
     }
 
     this.questoesConcluidas++;
@@ -191,18 +191,18 @@ export class GameComponent {
       tabuadas: this.tabuadasDisponiveis,
       modoAleatorio: this.modoAleatorio,
       questoes: this.questoesRespondidas,
-      acertos: this.acertos,
-      erros: this.erros,
+      corretos: this.corretos,
+      incorretos: this.incorretos,
       tempoTotalSegundos: tempoTotalSegundos
     };
 
     this.historicoService.salvarPartida(partida);
 
-    if (this.acertos >= this.totalQuestoes * 0.7) {
-      this.mensagem = `🎉 PARABÉNS ${this.nomeJogador.toUpperCase()}! Você acertou ${this.acertos} de ${this.totalQuestoes} questões!`;
+    if (this.corretos >= this.totalQuestoes * 0.7) {
+      this.mensagem = `🎉 PARABÉNS ${this.nomeJogador.toUpperCase()}! Você acertou ${this.corretos} de ${this.totalQuestoes} questões!`;
       this.mensagemCor = '#4CAF50';
     } else {
-      this.mensagem = `${this.nomeJogador}, você acertou ${this.acertos} de ${this.totalQuestoes}. Continue praticando!`;
+      this.mensagem = `${this.nomeJogador}, você acertou ${this.corretos} de ${this.totalQuestoes}. Continue praticando!`;
       this.mensagemCor = '#ff9800';
     }
   }

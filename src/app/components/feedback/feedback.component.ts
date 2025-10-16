@@ -8,8 +8,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './feedback.component.scss'
 })
 export class FeedbackComponent {
-  @Input() acertos: number = 0;
-  @Input() erros: number = 0;
+  @Input() corretos: number = 0;
+  @Input() incorretos: number = 0;
   @Input() totalQuestoes: number = 10;
   @Input() mensagem: string = '';
   @Input() mensagemCor: string = '#4CAF50';
@@ -18,7 +18,7 @@ export class FeedbackComponent {
   @Output() voltarHome = new EventEmitter<void>();
 
   get percentual(): number {
-    return Math.round((this.acertos / this.totalQuestoes) * 100);
+    return Math.round((this.corretos / this.totalQuestoes) * 100);
   }
 
   onReiniciar() {

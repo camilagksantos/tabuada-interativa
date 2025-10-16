@@ -18,7 +18,7 @@
         <div class="progresso-container">
             <div class="progresso-info">
                 <span>Questão {{ questoesConcluidas + 1 }} de {{ totalQuestoes }}</span>
-                <span>⭐ {{ acertos }} | ❌ {{ erros }}</span>
+                <span>⭐ {{ corretos }} | ❌ {{ incorretos }}</span>
             </div>
             <div class="barra-progresso">
                 <div 
@@ -82,8 +82,8 @@
     <!-- Componente de Feedback - Tela Final -->
     <app-feedback 
         *ngIf="jogoFinalizado" 
-        [acertos]="acertos" 
-        [erros]="erros" 
+        [corretos]="corretos" 
+        [incorretos]="incorretos" 
         [totalQuestoes]="totalQuestoes"
         [mensagem]="mensagem" 
         [mensagemCor]="mensagemCor" 

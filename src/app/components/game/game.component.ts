@@ -44,6 +44,9 @@ export class GameComponent {
 
   questoesGeradas: Set<string> = new Set();
 
+  mostrarFeedbackAcerto: boolean = false;
+  mostrarFeedbackErro: boolean = false;
+
   constructor(
     private router: Router,
     private gameState: GameStateService,
@@ -75,6 +78,8 @@ export class GameComponent {
     this.questoesGeradas = new Set();
     this.questoesRespondidas = [];     
     this.tempoInicioPartida = Date.now();
+    this.mostrarFeedbackAcerto = false;
+    this.mostrarFeedbackErro = false;
     this.proximaQuestao();
   }
 
@@ -163,15 +168,28 @@ export class GameComponent {
     };
 
     this.questoesRespondidas.push(questao);
+    this.questoesConcluidas++;
 
     if (correta) {
-      this.corretos++;
-    } else {
-      this.incorretos++;
-    }
+      this.corretos++;  // ← SÓ INCREMENTA AQUI
+      this.mostrarFeedbackAcerto = true;
 
-    this.questoesConcluidas++;
-    this.proximaQuestao();
+      setTimeout(() => {
+        this.mostrarFeedbackAcerto = false;
+        this.botoesDesabilitados = false;
+        this.proximaQuestao();
+      }, 1500);
+
+    } else {
+      this.incorretos++;  // ← SÓ INCREMENTA AQUI
+      this.mostrarFeedbackErro = true;
+
+      setTimeout(() => {
+        this.mostrarFeedbackErro = false;
+        this.botoesDesabilitados = false;
+        this.proximaQuestao();
+      }, 3000);
+    }
   }
 
   getProgresso(): number {

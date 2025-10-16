@@ -79,6 +79,37 @@
         </div>
     </div>
 
+    <!-- Overlay de ACERTO -->
+    <div class="feedback-acerto-overlay" *ngIf="mostrarFeedbackAcerto">
+        <div class="acerto-content">
+            <div class="icone-gigante">✓</div>
+            <div class="texto-acerto">Correto!</div>
+        </div>
+        <div class="particula particula-1">🎊</div>
+        <div class="particula particula-2">🎉</div>
+        <div class="particula particula-3">✨</div>
+        <div class="particula particula-4">⭐</div>
+    </div>
+    
+    <!-- Popup de ERRO -->
+    <div class="feedback-erro-overlay" *ngIf="mostrarFeedbackErro">
+        <div class="erro-popup">
+            <div class="erro-icone">❌</div>
+            <h3>Ops!</h3>
+            <div class="respostas">
+                <div class="resposta-usuario">
+                    Você respondeu: <strong class="errado">{{ respostaUsuario }}</strong>
+                </div>
+                <div class="resposta-correta">
+                    Resposta certa: <strong class="certo">{{ respostaCorreta }}</strong> ✓
+                </div>
+            </div>
+            <div class="timer-bar">
+                <div class="timer-fill"></div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Componente de Feedback - Tela Final -->
     <app-feedback 
         *ngIf="jogoFinalizado" 

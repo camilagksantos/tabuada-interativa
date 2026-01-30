@@ -47,6 +47,10 @@ export class GameComponent {
   mostrarFeedbackAcerto: boolean = false;
   mostrarFeedbackErro: boolean = false;
 
+  feedbackPergunta: string = '';
+  feedbackRespostaUsuario: number = 0;
+  feedbackRespostaCorreta: number = 0;
+
   constructor(
     private router: Router,
     private gameState: GameStateService,
@@ -168,6 +172,11 @@ export class GameComponent {
     };
 
     this.questoesRespondidas.push(questao);
+
+    // Captura dados para o popup antes de mudar a questão
+    this.feedbackPergunta = `${this.numeroAtual} × ${this.multiplicadorAtual}`;
+    this.feedbackRespostaUsuario = respostaNumerica;
+    this.feedbackRespostaCorreta = this.respostaCorreta;
 
     if (correta) {
       this.corretos++;  // ← SÓ INCREMENTA AQUI
